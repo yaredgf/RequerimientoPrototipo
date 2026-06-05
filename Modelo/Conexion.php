@@ -7,9 +7,9 @@ class Conexion
     function Ejecutar($query)
     {
         $servername ="127.0.0.1";
-        $user="root";
-        $pass="1106";
-        $dbname ="PRUEBA_ECOMMERCE";
+        $user="";
+        $pass="";
+        $dbname ="RequerimientoPrototipo";
 
         if(!$this->mysqli=new mysqli($servername,$user,$pass,$dbname))
         {
