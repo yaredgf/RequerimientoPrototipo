@@ -1,4 +1,8 @@
 # Changelog
+## v0.4 
+    * Se trabajó la lógica del login
+    * Se trabajó los Métodos del Proveedor
+
 ## v0.3 
     * Se agregaron los Querys de las tablas TipoUsuario, Usuario y Proveedores
 
