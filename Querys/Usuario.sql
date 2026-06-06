@@ -6,5 +6,5 @@ CREATE TABLE Usuario (
     CONSTRAINT FK_Usuarios_TipoUsuario
         FOREIGN KEY (IdTipoUsuario)
         REFERENCES TipoUsuario(IdTipoUsuario),
-    EsActivo BIT NOT NULL DEFAULT 1
+    Estado BIT NOT NULL DEFAULT 1
 );

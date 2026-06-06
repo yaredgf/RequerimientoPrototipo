@@ -1,4 +1,9 @@
 # Changelog
+## v0.5
+    * Se agregó query tabla CategoriaProducto
+    * Se agregó query tabla Producto
+    * Se agregó un query general con todas las tablas 
+    
 ## v0.4 
     * Se trabajó la lógica del login
     * Se trabajó los Métodos del Proveedor
