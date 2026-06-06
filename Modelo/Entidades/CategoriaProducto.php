@@ -1,6 +1,6 @@
 <?php
 
-class Proveedor
+class CategoriaProducto
 {
     private $id, $nombre, $Estado;
 
@@ -36,4 +36,3 @@ class Proveedor
 }
 
 ?>
-
