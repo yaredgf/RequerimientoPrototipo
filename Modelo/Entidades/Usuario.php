@@ -2,7 +2,7 @@
 
 class Usuario
 {
-    private $id, $username, $pass, $idTipoUsuario, $esActivo;
+    private $id, $username, $pass, $Email,$idTipoUsuario, $esActivo;
 
     public function getId()
     {
@@ -52,6 +52,16 @@ class Usuario
     public function setEsActivo($esActivo): void
     {
         $this->esActivo = $esActivo;
+    }
+
+    public function getEmail()
+    {
+        return $this->Email;
+    }
+
+    public function setEmail($Email): void
+    {
+        $this->Email = $Email;
     }
 
 

@@ -1,9 +1,18 @@
 # Changelog
+## v0.7
+    * Se terminó la Entidad Producto
+    * Se cambió la Entidad Usuario para coincidir con los cambios en la tabla Usuario
+    
+## v0.6
+    * Se agregó Entidad CategoriaProducto (terminada)
+    * Se agregó Entidad Producto (No terminada)
+    * Se modificó la tabla Usuario para tener una columna Email
+
 ## v0.5
     * Se agregó query tabla CategoriaProducto
     * Se agregó query tabla Producto
     * Se agregó un query general con todas las tablas 
-    
+
 ## v0.4 
     * Se trabajó la lógica del login
     * Se trabajó los Métodos del Proveedor
