@@ -1,33 +1,34 @@
 CREATE TABLE TipoUsuario (
-    IdTipoUsuario INT PRIMARY KEY,
+    Id INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(50) NOT NULL
 );
-INSERT INTO TipoUsuario (IdTipoUsuario, Nombre) VALUES (1, 'Administrador'), (2, 'Vendedor');
+INSERT INTO TipoUsuario (Nombre) VALUES ('Administrador'), ('Vendedor');
 
 CREATE TABLE CategoriaProducto (
-    Id INT PRIMARY KEY,
+    Id INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(128) NOT NULL,
     Estado BIT NOT NULL DEFAULT 1);
+INSERT INTO CategoriaProducto (Nombre) VALUES ('Sin Categoría'), ('Cámaras');
 
 CREATE TABLE Proveedor ( 
-    Id INT PRIMARY KEY, 
+    Id INT PRIMARY KEY AUTO_INCREMENT, 
     Nombre VARCHAR(128) NOT NULL,
     Estado BIT NOT NULL DEFAULT 1);
 
 CREATE TABLE Usuario (
-    Id INT  PRIMARY KEY,
+    Id INT  PRIMARY KEY AUTO_INCREMENT,
     Username VARCHAR(64) NOT NULL,
     Password VARCHAR(128) NOT NULL,
     Email VARCHAR(128) NOT NULL UNIQUE,
     idTipoUsuario INT NOT NULL,
     CONSTRAINT FK_Usuarios_TipoUsuario
         FOREIGN KEY (IdTipoUsuario)
-        REFERENCES TipoUsuario(IdTipoUsuario),
+        REFERENCES TipoUsuario(Id),
     Estado BIT NOT NULL DEFAULT 1
 );
 
 CREATE TABLE Producto (
-    Id INT PRIMARY KEY,
+    Id INT PRIMARY KEY AUTO_INCREMENT,
     Nombre VARCHAR(128) NOT NULL,
     IdCategoria INT NOT NULL,
     IdProveedor INT NOT NULL,

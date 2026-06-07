@@ -6,14 +6,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title>Document</title>
 </head>
-<body>
-    <div class="row justify-content-center py-5" >
+<body style="height=100vh !important; ">
+    <div class="row justify-content-center py-5 h-100" style="height=100vh !important;">
         <div class="col-6">
             <div class="card overflow-hidden">
                 <div class="row">
                     <!--LogIn-->
                     <div class="col-8 p-5">
-                        <h1>Log In</h1>
+                        <h1>Nombre empresa</h1>
                         <div class="input-group mt-3">
                             <span class="input-group-text" id="basic-addon3">Correo</span>
                             <input type="text" class="form-control" id="inputCorreo">

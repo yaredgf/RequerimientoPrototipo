@@ -1,4 +1,9 @@
 # Changelog
+## v0.9
+    * Se hicieron cambios en los querys de las BD
+    * Se hizo el UsuarioM.php
+    * El login ya funciona
+    
 ## v0.8
     * Se empezó la ventana de LogIn
     * Se agregaron los métodos de usuario

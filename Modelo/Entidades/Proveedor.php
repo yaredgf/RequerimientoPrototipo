@@ -2,7 +2,7 @@
 
 class Proveedor
 {
-    private $id, $nombre, $Estado;
+    private $id, $nombre, $estado;
 
     public function getId()
     {
@@ -26,12 +26,12 @@ class Proveedor
 
     public function getEstado()
     {
-        return $this->Estado;
+        return $this->estado;
     }
 
-    public function setEstado($Estado): void
+    public function setEstado($estado): void
     {
-        $this->Estado = $Estado;
+        $this->estado = $estado;
     }
 }
 
