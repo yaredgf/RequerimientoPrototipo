@@ -1,4 +1,7 @@
 # Changelog
+## v0.10
+    * Se hizo el CategoriaProductoM
+
 ## v0.9
     * Se hicieron cambios en los querys de las BD
     * Se hizo el UsuarioM.php
