@@ -1,4 +1,7 @@
 # Changelog
+## v0.11
+    * Se hizo el ProductoM
+    
 ## v0.10
     * Se hizo el CategoriaProductoM
 
