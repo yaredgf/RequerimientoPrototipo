@@ -26,6 +26,7 @@ CREATE TABLE Usuario (
         REFERENCES TipoUsuario(Id),
     Estado BIT NOT NULL DEFAULT 1
 );
+INSERT INTO Usuario (Username, Password, Email, idTipoUsuario) VALUES ('Admin', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'admin@admin.com', 1);
 
 CREATE TABLE Producto (
     Id INT PRIMARY KEY AUTO_INCREMENT,

@@ -8,3 +8,8 @@
     define("PAGO_COMPROBANTE","1");
     define("PAGO_TARJETA","2");
     define("PAGO_PROTOGEMAS","3");
+    
+    define("FORMATO_FECHA","Y-m-d H:i:s");
+
+    define("ROL_ADMIN","1");
+    define("ROL_VENDEDOR","2");

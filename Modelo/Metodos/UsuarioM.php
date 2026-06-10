@@ -5,6 +5,52 @@ require_once "./Modelo/Entidades/Usuario.php";
 
 class UsuarioM
 {
+    function CorreoDisponible($correo)
+    {
+        $retVal=false;
+        $conexion= new Conexion();
+
+        $sql="SELECT CASE WHEN COUNT(1) = 0 THEN TRUE ELSE FALSE END AS disponible FROM USUARIO u WHERE u.Email = '".$correo."' ;";
+        $resultado=$conexion->Ejecutar($sql);
+
+        if(mysqli_num_rows($resultado)>0)
+        {
+            while($fila=$resultado->fetch_assoc())
+            {
+                $retVal = $fila["disponible"];
+            }
+        }
+
+        $conexion->Cerrar();
+
+        return $retVal;
+    }
+    function BuscarPorCorreo ($correo)
+    {
+        $retVal=null;
+        $conexion= new Conexion();
+
+        $sql="SELECT * FROM USUARIO u WHERE u.Email = '".$correo."';";
+        $resultado=$conexion->Ejecutar($sql);
+
+        if(mysqli_num_rows($resultado)>0)
+        {
+            while($fila=$resultado->fetch_assoc())
+            {
+                $u= new Usuario();
+                $retVal->setId($fila["ID"]);
+                $retVal->setUsername($fila["Username"]);
+                $retVal->setEmail($fila["Email"]);
+                $retVal->setIdTipoUsuario($fila["idTipoUsuario"]);
+                $retVal->setEstado($fila["ESTADO"]);
+            }
+        }
+
+        $conexion->Cerrar();
+
+        return $retVal;
+    }
+
     function ValidarContrasenna($correo, $pass)
     {
         $retVal=-1;

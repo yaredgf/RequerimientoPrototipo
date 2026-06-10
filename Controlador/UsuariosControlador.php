@@ -8,7 +8,18 @@ class UsuariosControlador
 {
     function Index()
     {
-        require_once "./Vistas/LogIn.php";
+        if (isset($_SESSION["idUsuario"]))
+        {
+            header("Location: index.php?c=index");
+            die();
+        }
+        if (isset($_SESSION["idUsuario"]))
+        {
+            $uM = new UsuarioM();
+            $todos = $uM->BuscarTodos();
+            $vista = "Usuarios";
+            require_once "./Vistas/Dashboard.php"   
+        }
     }
 
 
@@ -26,8 +37,8 @@ class UsuariosControlador
 
             if ($idUsuario != -1)
             {
-                $_SESSION["idUsuario"] = $correo;
-                $_SESSION["usuario"] = $correo;
+                $_SESSION["idUsuario"] = $idUsuario;
+                $_SESSION["usuario"] = json_encode($uM->Buscar($idUsuario));
                 echo json_encode(true);
             }
             else
@@ -48,56 +59,69 @@ class UsuariosControlador
         die();
     }
 
-    function Crear() // FALTA HACER ESTOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    function Crear() 
     {
-        $u = new Usuario();
-        $uM = new UsuarioM();
-        $actualizar=false;
-        if(isset($_POST['id'])){
-            if($_POST['id']!=""){
-                $u = $uM->Buscar($_POST['id']);
+        if ($_SERVER["REQUEST_METHOD"] == "POST")
+        {
+            $u = new Usuario();
+            $uM = new UsuarioM();
+            $actualizar=false;
+
+            $json = json_decode(file_get_contents('php://input'));
+
+            if($json->id != ""){
+                $u = $uM->Buscar($json->id);
                 $actualizar=true;
             }else{
-            $u->setCorreo($_POST["correo"]);
-                $u->setFechaCreacion(date("Y-m-d H:i:s"));
+                $u->setFechaCreacion(date(FORMATO_FECHA));
+                $u->setEstado(1);
             }
+            
+            $u->setUsername($_POST["username"]);
+            $u->setPass(hash('sha256', $json->pass));
+            $u->setEmail($json->email);
+            $u->setIdTipoUsuario($json->idTipoUsuario);
+            $id = $uM->Crear($u);
+
+            echo json_encode(true);
         }
         else
         {
-            $u->setCorreo($_POST["correo"]);
-            $u->setFechaCreacion(date("Y-m-d H:i:s"));
-        }
-        $u->setEstado(1);
-        if(isset($_POST['cedula'])){
-            $u->setCedula($_POST["cedula"]);
-        }
-        if(isset($_POST['correo'])){
-            $u->setCorreo($_POST["correo"]);
-        }
-        $u->setNombre($_POST["nombre"]);
-        $u->setApellidos($_POST["apellidos"]);
-        $u->setTelefono($_POST["telefono"]);
-        $u->setIsValidated(false);
-        $id = $uM->Crear($u);
-
-        echo var_dump($id);
-        if(!$actualizar){
-            $c->setIdUsuario($id);
-            $c->setToken('sasa');
-            $c->setIsTemp($esTemporal);
-            $c->setPass(hash('sha256', $password));
-            var_dump($c->getIdUsuario());
-            $cM->Crear($c);
-            $this->PassReset($u->getCorreo());
             
         }
-        header("Location: index.php?c=Usuarios&a=Cuenta");
-        die();
     }
 
+    function Nuevo()
+    {
+        if (true)
+        {
+            $u = null;
+            $json = json_decode(file_get_contents('php://input'));
+            if($json->id != ""){
+                $u = $uM->Buscar($json->id);
+            }
+            $vista = "UsuarioCrear";
+            require_once "./Vistas/Dashboard.php"
+        }
+    }
+
+    function Activar()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST")
+        {
+            $retVal = false;
+            $json = json_decode(file_get_contents('php://input'));
+            $u = new Usuario();
+            $uM = new UsuarioM();
+            $u->setId($json->id);
+            $u->setEstado($json->estado);
+            $retVal = $uM->Activar();
+            echo json_encode($retVal);
+        }
+    }
+
+
     /*
-    Buscar
-    BuscarTodos
     Activar
 
 

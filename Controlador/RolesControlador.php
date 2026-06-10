@@ -10,17 +10,6 @@ class RolesControlador
         require_once "./Vistas/LogIn.php";
     }
 
-
-    /*
-    LogIn
-    Registrar
-    Actualizar
-    Buscar
-    BuscarTodos
-    Activar
-
-
-    */
 }
 
 

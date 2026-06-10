@@ -1,4 +1,8 @@
 # Changelog
+## v0.13
+    * Se terminó el UsuariosControlador
+    * Se agregó la lógica del dashboard
+
 ## v0.12
     * Se hizo un query con datos de ejemplo para las tablas, para testear el sistema.
     

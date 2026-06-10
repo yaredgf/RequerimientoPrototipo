@@ -1,13 +1,15 @@
 <?php
 
-class CatalogoProductoM
+require_once "./Modelo/Entidades/CategoriaProducto.php";
+
+class CategoriaProductoM
 {
-    function Crear(CatalogoProducto $p)
+    function Crear(CategoriaProducto $p)
     {
         $retVal=false;
         $conexion= new Conexion();
         if($p->getId()==null){
-            $sql="INSERT INTO PROVEEDOR("
+            $sql="INSERT INTO CATEGORIAPRODUCTO("
                 ." NOMBRE,"
                 ." ESTADO)"
                 ." VALUES ("
@@ -24,11 +26,11 @@ class CatalogoProductoM
         $conexion->Cerrar();
         return $retVal;
     }
-    function Activar(CatalogoProducto $p)
+    function Activar(CategoriaProducto $p)
     {
         $retVal=false;
         $conexion = new Conexion();
-        $sql="UPDATE CATALOGOPRODUCTO SET ESTADO='".$p->getEstado()."' WHERE ID='".$p->getId()."'";
+        $sql="UPDATE CATEGORIAPRODUCTO SET ESTADO='".$p->getEstado()."' WHERE ID='".$p->getId()."'";
         if($conexion->Ejecutar($sql))
             $retVal=true;
         $conexion->Cerrar();
@@ -40,14 +42,14 @@ class CatalogoProductoM
         $todos=array();
         $conexion= new Conexion();
 
-        $sql="SELECT * FROM CATALOGOPRODUCTO";
+        $sql="SELECT * FROM CATEGORIAPRODUCTO";
         $resultado=$conexion->Ejecutar($sql);
 
         if(mysqli_num_rows($resultado)>0)
         {
             while($fila=$resultado->fetch_assoc())
             {
-                $p= new CatalogoProducto();
+                $p= new CategoriaProducto();
                 $p->setId($fila["ID"]);
                 $p->setNombre($fila["NOMBRE"]);
                 $p->setEstado($fila["ESTADO"]);

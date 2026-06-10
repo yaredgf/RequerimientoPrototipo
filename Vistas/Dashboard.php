@@ -12,6 +12,9 @@
 </head>
 <body>
     <h1>Hola, soy un dashboard todo épico</h1>
+    <div class="contenedor-vistas">
+        <?php if (isset($vista)) require_once "./Vistas/".$vista.".php"; ?>
+    </div>
     
 <div class="btn" id="btnLogOut">Cerrar sesión</div>
 </body>
