@@ -1,4 +1,7 @@
 # Changelog
+## v0.12
+    * Se hizo un query con datos de ejemplo para las tablas, para testear el sistema.
+    
 ## v0.11
     * Se hizo el ProductoM
     
