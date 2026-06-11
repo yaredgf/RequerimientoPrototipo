@@ -18,7 +18,7 @@ class UsuariosControlador
             $uM = new UsuarioM();
             $todos = $uM->BuscarTodos();
             $vista = "Usuarios";
-            require_once "./Vistas/Dashboard.php"   
+            require_once "./Vistas/Dashboard.php";
         }
     }
 
@@ -53,8 +53,13 @@ class UsuariosControlador
 
     function CerrarSesion()
     {
+        session_start();
+
         unset($_SESSION["idUsuario"]);
         unset($_SESSION["usuario"]);
+
+        session_destroy();
+
         header("Location: index.php?c=index");
         die();
     }
@@ -101,7 +106,7 @@ class UsuariosControlador
                 $u = $uM->Buscar($json->id);
             }
             $vista = "UsuarioCrear";
-            require_once "./Vistas/Dashboard.php"
+            require_once "./Vistas/Dashboard.php";
         }
     }
 
