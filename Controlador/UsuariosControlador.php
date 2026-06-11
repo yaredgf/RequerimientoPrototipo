@@ -18,7 +18,7 @@ class UsuariosControlador
             $uM = new UsuarioM();
             $todos = $uM->BuscarTodos();
             $vista = "Usuarios";
-            require_once "./Vistas/Dashboard.php"   
+            require_once "./Vistas/Dashboard.php";
         }
     }
 
@@ -77,7 +77,7 @@ class UsuariosControlador
                 $u->setEstado(1);
             }
             
-            $u->setUsername($_POST["username"]);
+            $u->setUsername($json->username);
             $u->setPass(hash('sha256', $json->pass));
             $u->setEmail($json->email);
             $u->setIdTipoUsuario($json->idTipoUsuario);
@@ -101,7 +101,7 @@ class UsuariosControlador
                 $u = $uM->Buscar($json->id);
             }
             $vista = "UsuarioCrear";
-            require_once "./Vistas/Dashboard.php"
+            require_once "./Vistas/Dashboard.php";
         }
     }
 
@@ -120,18 +120,6 @@ class UsuariosControlador
         }
     }
 
-
-    /*
-    Activar
-
-
-    */
 }
-
-
-
-
-
-
 
 ?>

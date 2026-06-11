@@ -14,6 +14,7 @@
                     <!--LogIn-->
                     <div class="col-8 p-5">
                         <h1>Nombre empresa</h1>
+                        <h1>Hoy me la doy en la pila</h1>
                         <div class="input-group mt-3">
                             <span class="input-group-text" id="basic-addon3">Correo</span>
                             <input type="text" class="form-control" id="inputCorreo">

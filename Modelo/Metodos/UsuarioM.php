@@ -38,11 +38,11 @@ class UsuarioM
             while($fila=$resultado->fetch_assoc())
             {
                 $u= new Usuario();
-                $retVal->setId($fila["ID"]);
+                $retVal->setId($fila["Id"]);
                 $retVal->setUsername($fila["Username"]);
                 $retVal->setEmail($fila["Email"]);
                 $retVal->setIdTipoUsuario($fila["idTipoUsuario"]);
-                $retVal->setEstado($fila["ESTADO"]);
+                $retVal->setEstado($fila["Estado"]);
             }
         }
 
@@ -111,7 +111,7 @@ class UsuarioM
 
     function Buscar($id)
     {
-        $retVal=null;
+        $retVal= new Usuario();
         $conexion= new Conexion();
 
         $sql="SELECT * FROM USUARIO u WHERE u.ID = '".$id."';";
@@ -122,11 +122,11 @@ class UsuarioM
             while($fila=$resultado->fetch_assoc())
             {
                 $u= new Usuario();
-                $retVal->setId($fila["ID"]);
+                $retVal->setId($fila["Id"]);
                 $retVal->setUsername($fila["Username"]);
                 $retVal->setEmail($fila["Email"]);
                 $retVal->setIdTipoUsuario($fila["idTipoUsuario"]);
-                $retVal->setEstado($fila["ESTADO"]);
+                $retVal->setEstado($fila["Estado"]);
             }
         }
 
@@ -148,11 +148,11 @@ class UsuarioM
             while($fila=$resultado->fetch_assoc())
             {
                 $u= new Usuario();
-                $u->setId($fila["ID"]);
+                $u->setId($fila["Id"]);
                 $u->setUsername($fila["Username"]);
                 $u->setEmail($fila["Email"]);
                 $u->setIdTipoUsuario($fila["idTipoUsuario"]);
-                $u->setEstado($fila["ESTADO"]);
+                $u->setEstado($fila["Estado"]);
                 $todos[]=$u;
             }
         }
