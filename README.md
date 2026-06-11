@@ -1,4 +1,7 @@
 # Changelog
+## v1.1
+    * Se añadieron los diagramas de CDU, Arquitectura, Contexto, Clases.
+    
 ## v1.0
     * Se corrigió todo JDJSASJDJA
     * Se agregaron los Metodos faltantes
