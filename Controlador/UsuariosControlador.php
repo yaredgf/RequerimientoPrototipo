@@ -1,5 +1,5 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 require_once "./Modelo/Entidades/Usuario.php";
 require_once "./Modelo/Metodos/UsuarioM.php";
 
@@ -10,15 +10,15 @@ class UsuariosControlador
     {
         if (isset($_SESSION["idUsuario"]))
         {
-            header("Location: index.php?c=index");
-            die();
-        }
-        if (isset($_SESSION["idUsuario"]))
-        {
             $uM = new UsuarioM();
             $todos = $uM->BuscarTodos();
-            $vista = "Usuarios";
+            $vistaActiva = "Usuarios";
             require_once "./Vistas/Dashboard.php";
+        }
+        else
+        {
+            header("Location: index.php?c=index");
+            die();
         }
     }
 
@@ -77,14 +77,13 @@ class UsuariosControlador
                 $u = $uM->Buscar($json->id);
                 $actualizar=true;
             }else{
-                $u->setFechaCreacion(date(FORMATO_FECHA));
                 $u->setEstado(1);
             }
             
             $u->setUsername($json->username);
             $u->setPass(hash('sha256', $json->pass));
             $u->setEmail($json->email);
-            $u->setIdTipoUsuario($json->idTipoUsuario);
+            $u->setIdTipoUsuario($json->rol);
             $id = $uM->Crear($u);
 
             echo json_encode(true);
@@ -95,20 +94,7 @@ class UsuariosControlador
         }
     }
 
-    function Nuevo()
-    {
-        if (true)
-        {
-            $u = null;
-            $json = json_decode(file_get_contents('php://input'));
-            if($json->id != ""){
-                $u = $uM->Buscar($json->id);
-            }
-            $vista = "UsuarioCrear";
-            require_once "./Vistas/Dashboard.php";
-        }
-    }
-
+    
     function Activar()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST")
@@ -119,7 +105,7 @@ class UsuariosControlador
             $uM = new UsuarioM();
             $u->setId($json->id);
             $u->setEstado($json->estado);
-            $retVal = $uM->Activar();
+            $retVal = $uM->Activar($u);
             echo json_encode($retVal);
         }
     }

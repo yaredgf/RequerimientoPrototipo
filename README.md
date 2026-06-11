@@ -1,4 +1,11 @@
 # Changelog
+## v1.0
+    * Se corrigió todo JDJSASJDJA
+    * Se agregaron los Metodos faltantes
+    * Se corrigieron las vistas y el dashboard
+    * Se corrigieron todos los controladores
+    * Se probaron todas las cosas
+
 ## v0.14
     * Se agregaron las vistas del dashboard para los CRUD'S
     * Se modifico visualmente el login

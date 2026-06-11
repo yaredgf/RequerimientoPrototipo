@@ -88,7 +88,7 @@ class UsuarioM
         else{
             $sql="UPDATE USUARIO SET ESTADO='".$u->getEstado().
                 "', USERNAME='".$u->getUsername().
-                "', PASSWORD='".$u->getPass().
+                //"', PASSWORD='".$u->getPass().
                 "', EMAIL='".$u->getEmail().
                 "', IDTIPOUSUARIO='".$u->getIdTipoUsuario().
                 "' WHERE ID='".$u->getId()."'";
@@ -102,7 +102,7 @@ class UsuarioM
     {
         $retVal=false;
         $conexion = new Conexion();
-        $sql="UPDATE USUARIO SET ESTADO='".$u->getEstado()."' WHERE ID='".$u->getId()."'";
+        $sql="UPDATE USUARIO SET ESTADO= NOT ESTADO WHERE ID='".$u->getId()."'";
         if($conexion->Ejecutar($sql))
             $retVal=true;
         $conexion->Cerrar();
@@ -121,7 +121,7 @@ class UsuarioM
         {
             while($fila=$resultado->fetch_assoc())
             {
-                $u= new Usuario();
+                $retVal= new Usuario();
                 $retVal->setId($fila["Id"]);
                 $retVal->setUsername($fila["Username"]);
                 $retVal->setEmail($fila["Email"]);

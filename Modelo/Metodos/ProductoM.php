@@ -1,4 +1,5 @@
 <?php
+require_once "./Modelo/Conexion.php";
 require_once "./Modelo/Entidades/Producto.php";
 
 Class ProductoM
@@ -10,21 +11,21 @@ Class ProductoM
         if($p->getId()==null){
             $sql="INSERT INTO PRODUCTO("
                 ." NOMBRE,"
-                ." DESCRIPCION,"
+                ." IdProveedor,"
                 ." PRECIO,"
                 ." IDCATEGORIA)"
                 ." VALUES ("
                 ."'".$p->getNombre()."',"
-                ."'".$p->getDescripcion()."',"
+                ."'".$p->getProveedor()."',"
                 ."'".$p->getPrecio()."',"
-                ."'".$p->getIdCategoria()."')";
+                ."'".$p->getCategoria()."')";
         }
         else{
-            $sql="UPDATE PRODUCTO SET ESTADO='".$u->getEstado().
+            $sql="UPDATE PRODUCTO SET ESTADO='".$p->getEstado().
                 "', NOMBRE='".$p->getNombre().
-                "', DESCRIPCION='".$p->getDescripcion().
+                "', IdProveedor='".$p->getProveedor().
                 "', PRECIO='".$p->getPrecio().
-                "', IDCATEGORIA='".$p->getIdCategoria().
+                "', IDCATEGORIA='".$p->getCategoria().
                 "' WHERE ID='".$p->getId()."'";
         }
         if($conexion->Ejecutar($sql))
@@ -45,13 +46,13 @@ Class ProductoM
         {
             while($fila=$resultado->fetch_assoc())
             {
-                $retVal= new Usuario();
-                $retVal->setId($fila["ID"]);
-                $retVal->setNombre($fila["NOMBRE"]);
-                $retVal->setDescripcion($fila["DESCRIPCION"]);
-                $retVal->setPrecio($fila["PRECIO"]);
-                $retVal->setIdCategoria($fila["IDCATEGORIA"]);
-                $retVal->setEstado($fila["ESTADO"]);
+                $retVal= new Producto();
+                $retVal->setId($fila["Id"]);
+                $retVal->setNombre($fila["Nombre"]);
+                $retVal->setProveedor($fila["IdProveedor"]);
+                $retVal->setPrecio($fila["Precio"]);
+                $retVal->setCategoria($fila["IdCategoria"]);
+                $retVal->setEstado($fila["Estado"]);
             }
         }
 
@@ -73,12 +74,12 @@ Class ProductoM
             while($fila=$resultado->fetch_assoc())
             {
                 $p= new Producto();
-                $p->setId($fila["ID"]);
-                $p->setNombre($fila["NOMBRE"]);
-                $p->setDescripcion($fila["DESCRIPCION"]);
-                $p->setPrecio($fila["PRECIO"]);
-                $p->setIdCategoria($fila["IDCATEGORIA"]);
-                $p->setEstado($fila["ESTADO"]);
+                $p->setId($fila["Id"]);
+                $p->setNombre($fila["Nombre"]);
+                $p->setProveedor($fila["IdProveedor"]);
+                $p->setPrecio($fila["Precio"]);
+                $p->setCategoria($fila["IdCategoria"]);
+                $p->setEstado($fila["Estado"]);
                 $todos[]=$p;
             }
         }
@@ -93,7 +94,7 @@ Class ProductoM
     {
         $retVal=false;
         $conexion = new Conexion();
-        $sql="UPDATE PRODUCTO SET ESTADO='".$p->getEstado()."' WHERE ID='".$p->getId()."'";
+        $sql="UPDATE PRODUCTO SET ESTADO= NOT ESTADO WHERE ID='".$p->getId()."'";
         if($conexion->Ejecutar($sql))
             $retVal=true;
         $conexion->Cerrar();

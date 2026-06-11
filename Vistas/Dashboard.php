@@ -11,8 +11,7 @@ if (!isset($_SESSION["idUsuario"])) {
     header("Location: index.php?c=index");
     die();
 }
-
-$vistaActiva = $vista ?? "Usuarios";
+if (! isset($vistaActiva)) $vistaActiva = "Dashboard";
 $usuarioSesion = isset($_SESSION["usuario"]) ? json_decode($_SESSION["usuario"]) : null;
 $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
 ?>
@@ -421,10 +420,11 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
 <aside class="sb">
     <div class="sb-brand">Panel de administrador</div>
     <nav class="sb-nav">
-        <a href="index.php?c=dashboard&vista=Usuarios" class="nav-btn <?= $vistaActiva === 'Usuarios' ? 'active' : '' ?>">Usuarios</a>
-        <a href="index.php?c=dashboard&vista=Productos" class="nav-btn <?= $vistaActiva === 'Productos' ? 'active' : '' ?>">Productos</a>
-        <a href="index.php?c=dashboard&vista=Proveedores" class="nav-btn <?= $vistaActiva === 'Proveedores' ? 'active' : '' ?>">Proveedores</a>
-        <a href="index.php?c=dashboard&vista=Roles" class="nav-btn <?= $vistaActiva === 'Roles' ? 'active' : '' ?>">Roles</a>
+        <a href="./index.php?c=Usuarios" class="nav-btn <?= $vistaActiva === 'Usuarios' ? 'active' : '' ?>">Usuarios</a>
+        <a href="./index.php?c=Productos&a=Index" class="nav-btn <?= $vistaActiva === 'Productos' ? 'active' : '' ?>">Productos</a>
+        <a href="./index.php?c=Categorias&a=Index" class="nav-btn <?= $vistaActiva === 'Categorias' ? 'active' : '' ?>">Categorías</a>
+        <a href="./index.php?c=Proveedores&a=Index" class="nav-btn <?= $vistaActiva === 'Proveedores' ? 'active' : '' ?>">Proveedores</a>
+        <a href="./index.php?c=Roles&a=Index" class="nav-btn <?= $vistaActiva === 'Roles' ? 'active' : '' ?>">Roles</a>
     </nav>
     <div class="sb-footer">
         <a href="index.php?c=Usuarios&a=CerrarSesion" class="logout-btn">Cerrar sesión</a>
@@ -433,7 +433,7 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
 
 <main class="main">
     <div class="topbar">
-        <span class="topbar-title"><?= $vistaActiva ?></span>
+        <span class="topbar-title"><? $vistaActiva ?></span>
     </div>
 
     <div class="content">
@@ -482,17 +482,17 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
             </div>
             <div class="tbl-wrap">
                 <table id="tbl-p">
-                    <thead><tr><th>Nombre</th><th>Descripción</th><th>Precio</th><th>Categoría</th><th>Estado</th><th></th></tr></thead>
+                    <thead><tr><th>Nombre</th><th>Precio</th><th>Proveedor</th><th>Categoría</th><th>Estado</th><th></th></tr></thead>
                     <tbody>
                         <?php if (!empty($todos)): ?>
                             <?php foreach ($todos as $p): ?>
                             <tr>
                                 <td><?= htmlspecialchars($p->getNombre()) ?></td>
-                                <td><?= htmlspecialchars($p->getDescripcion()) ?></td>
                                 <td>₡<?= number_format($p->getPrecio(), 2) ?></td>
-                                <td><?= htmlspecialchars($p->getIdCategoria()) ?></td>
+                                <td><?= htmlspecialchars($p->getProveedor()) ?></td>
+                                <td><?= htmlspecialchars($p->getCategoria()) ?></td>
                                 <td><span class="badge <?= $p->getEstado() == 1 ? 'badge-on' : 'badge-off' ?>"><?= $p->getEstado() == 1 ? 'Activo' : 'Inactivo' ?></span></td>
-                                <td><div class="td-actions"><button class="btn-sm btn-edit" onclick="editarProducto(<?= $p->getId() ?>,'<?= htmlspecialchars($p->getNombre(), ENT_QUOTES) ?>','<?= htmlspecialchars($p->getDescripcion(), ENT_QUOTES) ?>',<?= $p->getPrecio() ?>,<?= $p->getIdCategoria() ?>)">Editar</button><button class="btn-sm <?= $p->getEstado() == 1 ? 'btn-off' : 'btn-on' ?>" onclick="toggleEstado('productos',<?= $p->getId() ?>,<?= $p->getEstado() == 1 ? 0 : 1 ?>)"><?= $p->getEstado() == 1 ? 'Desactivar' : 'Activar' ?></button></div></td>
+                                <td><div class="td-actions"><button class="btn-sm btn-edit" onclick="editarProducto(<?= $p->getId() ?>,'<?= htmlspecialchars($p->getNombre(), ENT_QUOTES) ?>',<?= $p->getPrecio() ?>,'<?= htmlspecialchars($p->getProveedor(), ENT_QUOTES) ?>',<?= $p->getCategoria() ?>)">Editar</button><button class="btn-sm <?= $p->getEstado() == 1 ? 'btn-off' : 'btn-on' ?>" onclick="toggleEstado('productos',<?= $p->getId() ?>,<?= $p->getEstado() == 1 ? 0 : 1 ?>)"><?= $p->getEstado() == 1 ? 'Desactivar' : 'Activar' ?></button></div></td>
                             </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
@@ -528,6 +528,37 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr><td colspan="3"><div class="empty">Sin proveedores registrados</div></td></tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <?php endif; ?>
+
+        <!-- CATEGORIAS -->
+        <?php if ($vistaActiva === 'Categorias'): ?>
+        <section class="crud-sec">
+            <div class="sec-header">
+                <span class="sec-title">Categorías</span>
+                <div class="sec-actions">
+                    <input class="search" type="text" placeholder="Buscar…" oninput="filtrar('tbl-cat',this.value)">
+                    <button class="btn btn-accent" onclick="nuevoModal('modal-cat','Crear categoría')">+ Crear</button>
+                </div>
+            </div>
+            <div class="tbl-wrap">
+                <table id="tbl-prov">
+                    <thead><tr><th>Nombre</th><th>Estado</th><th></th></tr></thead>
+                    <tbody>
+                        <?php if (!empty($todos)): ?>
+                            <?php foreach ($todos as $p): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($p->getNombre()) ?></td>
+                                <td><span class="badge <?= $p->getEstado() == 1 ? 'badge-on' : 'badge-off' ?>"><?= $p->getEstado() == 1 ? 'Activo' : 'Inactivo' ?></span></td>
+                                <td><div class="td-actions"><button class="btn-sm btn-edit" onclick="editarCategoria(<?= $p->getId() ?>,'<?= htmlspecialchars($p->getNombre(), ENT_QUOTES) ?>')">Editar</button><button class="btn-sm <?= $p->getEstado() == 1 ? 'btn-off' : 'btn-on' ?>" onclick="toggleEstado('categorias',<?= $p->getId() ?>,<?= $p->getEstado() == 1 ? 0 : 1 ?>)"><?= $p->getEstado() == 1 ? 'Desactivar' : 'Activar' ?></button></div></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr><td colspan="3"><div class="empty">Sin categorías registrados</div></td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -602,12 +633,28 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
         </div>
         <input type="hidden" id="p-id">
         <div class="fg"><label>Nombre</label><input type="text" id="p-nombre" placeholder="Nombre del producto"><span class="ferr" id="p-nombre-err">Campo requerido</span></div>
-        <div class="fg"><label>Descripción</label><input type="text" id="p-desc" placeholder="Descripción breve"><span class="ferr" id="p-desc-err">Campo requerido</span></div>
         <div class="fg"><label>Precio (₡)</label><input type="number" id="p-precio" placeholder="0.00" min="0" step="0.01"><span class="ferr" id="p-precio-err">Precio inválido</span></div>
+        <div class="fg"><label>ID Proveedor</label><input type="text" id="p-prov" placeholder="ID de proveedor"><span class="ferr" id="p-desc-err">Campo requerido</span></div>
         <div class="fg"><label>ID Categoría</label><input type="text" id="p-cat" placeholder="ID de categoría"><span class="ferr" id="p-cat-err">Campo requerido</span></div>
         <div class="modal-foot">
             <button class="btn btn-cancel" onclick="cerrar('modal-p')">Cancelar</button>
             <button class="btn btn-accent" onclick="guardarProducto()">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CATEGORIAS -->
+<div class="overlay" id="modal-cat">
+    <div class="modal">
+        <div class="modal-hdr">
+            <span class="modal-title" id="modal-cat-title">Crear categorías</span>
+            <button class="modal-close" onclick="cerrar('modal-cat')">&times;</button>
+        </div>
+        <input type="hidden" id="cat-id">
+        <div class="fg"><label>Nombre</label><input type="text" id="cat-nombre" placeholder="Nombre de la categoría"><span class="ferr" id="cat-nombre-err">Campo requerido</span></div>
+        <div class="modal-foot">
+            <button class="btn btn-cancel" onclick="cerrar('modal-cat')">Cancelar</button>
+            <button class="btn btn-accent" onclick="guardarCategoria()">Guardar</button>
         </div>
     </div>
 </div>
@@ -709,13 +756,19 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
                 if (ok) onOk();
                 else onFail();
             })
-            .catch(() => toast('Error de conexión', 'err'));
+            //.catch(() => toast('Error de conexión', 'err'));
     }
 
     function reload(modal) {
         cerrar(modal);
         setTimeout(() => location.reload(), 700);
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /* USUARIOS */
     function editarUsuario(id, u, e, r) {
@@ -754,7 +807,7 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
             ok = false;
         }
         if (!ok) return;
-        post('index.php?c=usuarios&m=Crear', { id, username, email, pass, idTipoUsuario: rol },
+        post('index.php?c=Usuarios&a=Crear', { id, username, email, pass, rol },
             () => {
                 toast(id ? 'Usuario actualizado' : 'Usuario creado');
                 reload('modal-u');
@@ -765,7 +818,7 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
 
     /* TOGGLE ESTADO */
     function toggleEstado(entidad, id, estado) {
-        post('index.php?c=' + entidad + '&m=Activar', { id, estado },
+        post('index.php?c=' + entidad + '&a=Activar', { id, estado },
             () => {
                 toast(estado == 1 ? 'Activado' : 'Desactivado');
                 setTimeout(() => location.reload(), 700);
@@ -775,10 +828,10 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
     }
 
     /* PRODUCTOS */
-    function editarProducto(id, n, d, pr, cat) {
+    function editarProducto(id, n, pr, prov, cat) {
         document.getElementById('p-id').value = id;
         document.getElementById('p-nombre').value = n;
-        document.getElementById('p-desc').value = d;
+        document.getElementById('p-prov').value = prov;
         document.getElementById('p-precio').value = pr;
         document.getElementById('p-cat').value = cat;
         document.getElementById('modal-p-title').textContent = 'Editar producto';
@@ -789,7 +842,7 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
         limpiar('modal-p');
         const id = document.getElementById('p-id').value;
         const nombre = document.getElementById('p-nombre').value.trim();
-        const desc = document.getElementById('p-desc').value.trim();
+        const prov = document.getElementById('p-prov').value.trim();
         const precio = parseFloat(document.getElementById('p-precio').value);
         const cat = document.getElementById('p-cat').value.trim();
         let ok = true;
@@ -797,8 +850,8 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
             setErr('p-nombre', 'p-nombre-err');
             ok = false;
         }
-        if (!desc) {
-            setErr('p-desc', 'p-desc-err');
+        if (!prov) {
+            setErr('p-prov', 'p-desc-err');
             ok = false;
         }
         if (isNaN(precio) || precio < 0) {
@@ -810,10 +863,37 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
             ok = false;
         }
         if (!ok) return;
-        post('index.php?c=productos&m=Crear', { id, nombre, descripcion: desc, precio, idCategoria: cat },
+        post('index.php?c=Productos&a=Crear', { id, nombre, prov, precio, cat },
             () => {
                 toast(id ? 'Producto actualizado' : 'Producto creado');
                 reload('modal-p');
+            },
+            () => toast('No se pudo guardar', 'err')
+        );
+    }
+
+    /* CATEGORIAS */
+    function editarCategoria(id, n) {
+        document.getElementById('cat-id').value = id;
+        document.getElementById('cat-nombre').value = n;
+        document.getElementById('modal-cat-title').textContent = 'Editar categoría';
+        abrir('modal-cat');
+    }
+
+    function guardarCategoria() {
+        limpiar('modal-cat');
+        const id = document.getElementById('cat-id').value;
+        const nombre = document.getElementById('cat-nombre').value.trim();
+        let ok = true;
+        if (!nombre) {
+            setErr('cat-nombre', 'cat-nombre-err');
+            ok = false;
+        }
+        if (!ok) return;
+        post('index.php?c=Categorias&a=Crear', { id, nombre },
+            () => {
+                toast(id ? 'Categoria actualizada' : 'Categoria creada');
+                reload('modal-cat');
             },
             () => toast('No se pudo guardar', 'err')
         );
@@ -837,7 +917,7 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
             ok = false;
         }
         if (!ok) return;
-        post('index.php?c=proveedores&m=Crear', { id, nombre },
+        post('index.php?c=Proveedores&a=Crear', { id, nombre },
             () => {
                 toast(id ? 'Proveedor actualizado' : 'Proveedor creado');
                 reload('modal-prov');
@@ -864,7 +944,7 @@ $usernameDisplay = htmlspecialchars($usuarioSesion->username ?? "Usuario");
             ok = false;
         }
         if (!ok) return;
-        post('index.php?c=roles&m=Crear', { id, nombre },
+        post('index.php?c=Roles&a=Crear', { id, nombre },
             () => {
                 toast(id ? 'Rol actualizado' : 'Rol creado');
                 reload('modal-r');

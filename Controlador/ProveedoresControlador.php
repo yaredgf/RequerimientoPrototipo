@@ -1,17 +1,17 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
-require_once "./Modelo/Entidades/CategoriaProducto.php";
-require_once "./Modelo/Metodos/CategoriaProductoM.php";
+require_once "./Modelo/Entidades/Proveedor.php";
+require_once "./Modelo/Metodos/ProveedorM.php";
 
-class CategoriasControlador
+class ProveedoresControlador
 {
     function Index()
     {
         if (isset($_SESSION["idUsuario"]))
         {
-            $cM = new CategoriaProductoM();
-            $todos = $cM->BuscarTodos();
-            $vistaActiva = "Categorias";
+            $pM = new ProveedorM();
+            $todos = $pM->BuscarTodos();
+            $vistaActiva = "Proveedores";
             require_once "./Vistas/Dashboard.php";
         }
         else
@@ -25,21 +25,21 @@ class CategoriasControlador
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST")
         {
-            $c = new CategoriaProducto();
-            $cM = new CategoriaProductoM();
+            $p = new Proveedor();
+            $pM = new ProveedorM();
             $actualizar=false;
 
             $json = json_decode(file_get_contents('php://input'));
 
             if($json->id != ""){
-                $c = $cM->Buscar($json->id);
+                $p = $pM->Buscar($json->id);
                 $actualizar=true;
             }else{
-                $c->setEstado(1);
+                $p->setEstado(1);
             }
             
-            $c->setNombre($json->nombre);
-            $retVal = $cM->Crear($c);
+            $p->setNombre($json->nombre);
+            $retVal = $pM->Crear($p);
 
             echo json_encode($retVal);
         }
@@ -55,11 +55,11 @@ class CategoriasControlador
         {
             $retVal = false;
             $json = json_decode(file_get_contents('php://input'));
-            $c = new CategoriaProducto();
-            $cM = new CategoriaProductoM();
-            $c->setId($json->id);
-            $c->setEstado($json->estado);
-            $retVal = $cM->Activar($c);
+            $p = new Proveedor();
+            $pM = new ProveedorM();
+            $p->setId($json->id);
+            $p->setEstado($json->estado);
+            $retVal = $pM->Activar($p);
             echo json_encode($retVal);
         }
     }

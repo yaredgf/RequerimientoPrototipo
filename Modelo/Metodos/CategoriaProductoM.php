@@ -1,5 +1,5 @@
 <?php
-
+require_once "./Modelo/Conexion.php";
 require_once "./Modelo/Entidades/CategoriaProducto.php";
 
 class CategoriaProductoM
@@ -17,7 +17,7 @@ class CategoriaProductoM
                 ."'".$p->getEstado()."')";
         }
         else{
-            $sql="UPDATE PROVEEDOR SET ESTADO='".$p->getEstado().
+            $sql="UPDATE CATEGORIAPRODUCTO SET ESTADO='".$p->getEstado().
                 "', NOMBRE='".$p->getNombre().
                 "' WHERE ID='".$p->getId()."'";
         }
@@ -30,10 +30,34 @@ class CategoriaProductoM
     {
         $retVal=false;
         $conexion = new Conexion();
-        $sql="UPDATE CATEGORIAPRODUCTO SET ESTADO='".$p->getEstado()."' WHERE ID='".$p->getId()."'";
+        $sql="UPDATE CATEGORIAPRODUCTO SET ESTADO= NOT ESTADO WHERE ID='".$p->getId()."'";
         if($conexion->Ejecutar($sql))
             $retVal=true;
         $conexion->Cerrar();
+        return $retVal;
+    }
+
+    function Buscar($id)
+    {
+        $retVal=null;
+        $conexion= new Conexion();
+
+        $sql="SELECT * FROM CATEGORIAPRODUCTO WHERE ID = '".$id."';";
+        $resultado=$conexion->Ejecutar($sql);
+
+        if(mysqli_num_rows($resultado)>0)
+        {
+            while($fila=$resultado->fetch_assoc())
+            {
+                $retVal= new CategoriaProducto();
+                $retVal->setId($fila["Id"]);
+                $retVal->setNombre($fila["Nombre"]);
+                $retVal->setEstado($fila["Estado"]);
+            }
+        }
+
+        $conexion->Cerrar();
+
         return $retVal;
     }
 
@@ -50,9 +74,9 @@ class CategoriaProductoM
             while($fila=$resultado->fetch_assoc())
             {
                 $p= new CategoriaProducto();
-                $p->setId($fila["ID"]);
-                $p->setNombre($fila["NOMBRE"]);
-                $p->setEstado($fila["ESTADO"]);
+                $p->setId($fila["Id"]);
+                $p->setNombre($fila["Nombre"]);
+                $p->setEstado($fila["Estado"]);
                 $todos[]=$p;
             }
         }
