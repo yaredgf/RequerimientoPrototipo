@@ -53,8 +53,12 @@ class UsuariosControlador
 
     function CerrarSesion()
     {
+
         unset($_SESSION["idUsuario"]);
         unset($_SESSION["usuario"]);
+
+        session_destroy();
+
         header("Location: index.php?c=index");
         die();
     }

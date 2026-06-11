@@ -1,4 +1,8 @@
 # Changelog
+## v0.14
+    * Se agregaron las vistas del dashboard para los CRUD'S
+    * Se modifico visualmente el login
+
 ## v0.13
     * Se terminó el UsuariosControlador
     * Se agregó la lógica del dashboard
